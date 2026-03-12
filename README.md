@@ -57,7 +57,7 @@ Check Jobs is a modern web application for browsing and exploring job listings. 
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/rudratek-assessment
+git clone https://github.com//Itzadetunji/rudratek-assessment
 cd rudratek-assessment
 ```
 
@@ -114,26 +114,24 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ## 📸 Screenshots
 
 ### Jobs List Page
-
-![Jobs List](./public/screenshots/jobs-list.png)
+<img width="1680" height="928" alt="Screenshot 2026-03-12 at 20 05 21" src="https://github.com/user-attachments/assets/423cc23a-3de6-488e-b81f-ff4d54051997" />
+<img width="1679" height="927" alt="Screenshot 2026-03-12 at 20 05 13" src="https://github.com/user-attachments/assets/de61b31f-a051-4871-ab80-860de79a58ad" />
 
 *Browse jobs with search, sort, and pagination.*
 
 ---
 
 ### Job Details Page
-
-![Job Details](./public/screenshots/job-details.png)
+<img width="1680" height="927" alt="Screenshot 2026-03-12 at 20 05 37" src="https://github.com/user-attachments/assets/1662dc00-687a-40f9-8788-ebd004a6c8ec" />
 
 *View full job information in a card layout.*
 
 ---
 
-### Dark Mode
+### Dark Mode & Mobile
 
-![Dark Mode](./public/screenshots/dark-mode.png)
-
-*Toggle between light and dark themes.*
+<img width="585" height="1266" alt="IMG_5737" src="https://github.com/user-attachments/assets/b288f81f-b782-4d8f-9f6e-1fb60f651f61" />
+<img width="585" height="1266" alt="IMG_5738" src="https://github.com/user-attachments/assets/abf163f3-1ab4-4669-b2a4-6d457d66baea" />
 
 ---
 
@@ -191,7 +189,5 @@ bun run test:api
 ```
 
 ### Test Cases
-
-![Test Cases](./public/screenshots/test-cases.png)
-
+<img width="475" height="269" alt="Screenshot 2026-03-12 at 20 12 51" src="https://github.com/user-attachments/assets/9514331f-a650-4a44-989e-84390dfdb960" />
 *API route tests with Bun.*
