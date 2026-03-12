@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ReadCvLogoIcon } from "@phosphor-icons/react";
+import { ListIcon, ReadCvLogoIcon } from "@phosphor-icons/react";
 
 const navItems = [
 	{ href: "/", label: "Home" },
@@ -29,7 +29,7 @@ export function Navbar() {
 	const [mounted, setMounted] = useState(false);
 	const [mobileOpen, setMobileOpen] = useState(false);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const savedTheme = window.localStorage.getItem(THEME_KEY);
 		if (savedTheme) {
 			const dark = savedTheme === "dark";
@@ -57,7 +57,7 @@ export function Navbar() {
 	const themeLabel = useMemo(() => (isDark ? "Light" : "Dark"), [isDark]);
 
 	return (
-		<nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+		<nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl supports-backdrop-filter:bg-background/60">
 			<div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 				<Link
 					href="/"
@@ -87,6 +87,7 @@ export function Navbar() {
 										variant: isActive ? "default" : "ghost",
 										size: "default",
 									}),
+									"cursor-pointer",
 								)}
 							>
 								{item.label}
@@ -96,6 +97,7 @@ export function Navbar() {
 
 					<Button
 						variant="outline"
+						className="cursor-pointer"
 						onClick={toggleTheme}
 					>
 						{mounted ? `${themeLabel} mode` : "Theme"}
@@ -107,6 +109,7 @@ export function Navbar() {
 						variant="outline"
 						size="sm"
 						onClick={toggleTheme}
+						className="cursor-pointer"
 					>
 						{mounted ? themeLabel : "Theme"}
 					</Button>
@@ -115,24 +118,13 @@ export function Navbar() {
 						size="icon-sm"
 						aria-label="Toggle navigation menu"
 						onClick={() => setMobileOpen((previous) => !previous)}
+						className="cursor-pointer"
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							className="h-6 w-6"
-							aria-hidden="true"
-						>
-							<path d="M4 5h16" />
-							<path d="M4 12h16" />
-							<path d="M4 19h16" />
-						</svg>
+						<ListIcon
+							size={24}
+							weight="bold"
+							color="currentColor"
+						/>
 					</Button>
 				</div>
 			</div>
