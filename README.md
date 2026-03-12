@@ -1,6 +1,6 @@
 # 🚀 Check Jobs
 
-> A responsive jobs listing application with search, sort, and pagination. Browse opportunities, view details, and toggle dark mode with a glassmorphic UI.
+> A responsive jobs listing application with search, sort, and pagination. Browse opportunities, view details, and toggle dark mode.
 
 ---
 
