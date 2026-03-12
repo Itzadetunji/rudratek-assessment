@@ -63,12 +63,12 @@ const useDebouncedValue = (value: string, delay = 350) => {
 	const [debouncedValue, setDebouncedValue] = useState(value);
 
 	useEffect(() => {
-		const timer = window.setTimeout(() => {
+		const timer = setTimeout(() => {
 			setDebouncedValue(value);
 		}, delay);
 
 		return () => {
-			window.clearTimeout(timer);
+			clearTimeout(timer);
 		};
 	}, [delay, value]);
 
@@ -185,7 +185,12 @@ export default function JobsPage() {
 													<TableCell>{job.department}</TableCell>
 													<TableCell>{job.location}</TableCell>
 													<TableCell>
-														<Badge variant="outline">{job.role_type}</Badge>
+														<Badge
+															variant="outline"
+															className="capitalize"
+														>
+															{job.role_type.split("_").join(" ")}
+														</Badge>
 													</TableCell>
 													<TableCell className="text-right">
 														<Link
@@ -211,7 +216,7 @@ export default function JobsPage() {
 							<p className="text-sm text-muted-foreground">
 								{pagination
 									? `Showing page ${pagination.current_page} of ${pagination.total_pages} (${pagination.total} jobs)`
-									: "Loading pagination..."}
+									: "Loading..."}
 							</p>
 
 							<Pagination className="mx-0 w-auto justify-start sm:justify-end">
