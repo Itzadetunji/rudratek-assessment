@@ -1,36 +1,197 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Check Jobs
 
-## Getting Started
+> A responsive jobs listing application with search, sort, and pagination. Browse opportunities, view details, and toggle dark mode with a glassmorphic UI.
 
-First, run the development server:
+---
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Tech Stack](#tech-stack)
+- [Screenshots](#screenshots)
+- [Project Structure](#project-structure)
+- [Testing](#testing)
+
+---
+
+<a name="overview"></a>
+## 🎯 Overview
+
+Check Jobs is a modern web application for browsing and exploring job listings. The platform allows users to:
+
+- **Browse Jobs**: View paginated job listings with title, department, location, role type, and posted date
+- **Search**: Filter jobs by title, department, location, or role type
+- **Sort**: Sort by any column (ascending or descending) with backend-driven ordering
+- **View Details**: Navigate to individual job pages with full information
+- **Dark Mode**: Toggle between light and dark themes with persistent preference
+
+---
+
+<a name="features"></a>
+## ✨ Features
+
+- 📋 **Jobs List**: Paginated table with search and sortable columns
+- 🔍 **Search**: Debounced search across title, department, location, and role type
+- ⬆️⬇️ **Sorting**: Click column arrows to sort; default is posted date descending
+- 📄 **Job Details**: Dedicated page for each job with card-based layout
+- 🌙 **Dark Mode**: Toggle with localStorage persistence and system preference fallback
+- 🎨 **Glassmorphic UI**: Translucent surfaces with backdrop blur
+- 📱 **Responsive**: Mobile-first layout with collapsible navbar
+- ⚡ **Fast**: Built with Next.js 16, React 19, and TanStack Query
+- 🧪 **Tested**: API routes covered with Bun test
+
+---
+
+<a name="getting-started"></a>
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 20+ or Bun
+- npm, yarn, pnpm, or bun package manager
+
+### Installation
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/your-username/rudratek-assessment
+cd rudratek-assessment
+```
+
+2. **Install dependencies**
+
+```bash
+npm install
+# or
+bun install
+```
+
+3. **Run the development server**
 
 ```bash
 npm run dev
 # or
-yarn dev
-# or
-pnpm dev
-# or
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. **Open your browser**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Navigate to [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+<a name="tech-stack"></a>
+## 🛠 Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+### Frontend
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **UI Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **State Management**: [TanStack Query](https://tanstack.com/query)
+- **Icons**: [Phosphor Icons](https://phosphoricons.com/)
+- **Notifications**: [Sonner](https://sonner.emilkowal.ski/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Backend
 
-## Deploy on Vercel
+- **API Routes**: Next.js API Routes
+- **Data**: In-memory dataset with [Faker](https://fakerjs.dev/) (40 jobs)
+- **HTTP Client**: [Axios](https://axios-http.com/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Development Tools
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Testing**: [Bun Test](https://bun.sh/docs/cli/test)
+- **Linting**: [Biome](https://biomejs.dev/)
+
+---
+
+<a name="screenshots"></a>
+## 📸 Screenshots
+
+### Jobs List Page
+
+![Jobs List](./public/screenshots/jobs-list.png)
+
+*Browse jobs with search, sort, and pagination.*
+
+---
+
+### Job Details Page
+
+![Job Details](./public/screenshots/job-details.png)
+
+*View full job information in a card layout.*
+
+---
+
+### Dark Mode
+
+![Dark Mode](./public/screenshots/dark-mode.png)
+
+*Toggle between light and dark themes.*
+
+---
+
+<a name="project-structure"></a>
+## 📁 Project Structure
+
+```
+rudratek-assessment/
+├── app/
+│   ├── api/                    # API routes
+│   │   └── jobs/
+│   │       ├── route.ts        # GET /api/jobs (list, search, sort, paginate)
+│   │       └── [id]/route.ts   # GET /api/jobs/:id (single job)
+│   ├── jobs/                   # Jobs pages
+│   │   ├── page.tsx            # Jobs list
+│   │   └── [job_id]/page.tsx   # Job details
+│   ├── layout.tsx              # Root layout
+│   └── page.tsx                # Home page
+├── components/
+│   ├── layout/
+│   │   └── navbar.tsx          # Shared navbar with dark mode toggle
+│   └── ui/                     # shadcn/ui components
+├── lib/
+│   ├── jobs/                   # Job types and data
+│   │   ├── types.ts
+│   │   └── data.ts
+│   └── utils/
+│       ├── api-error.ts        # Standardized error responses
+│       └── axios.ts            # API client
+├── providers/
+│   └── query-provider.tsx      # TanStack Query provider
+└── public/                     # Static assets
+    ├── favicon.ico
+    ├── theme-init.js           # Theme script (no flash)
+    └── screenshots/            # README screenshots
+```
+
+---
+
+<a name="testing"></a>
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+npm test
+# or
+bun test
+```
+
+Run only API tests:
+
+```bash
+bun run test:api
+```
+
+### Test Cases
+
+![Test Cases](./public/screenshots/test-cases.png)
+
+*API route tests with Bun.*
