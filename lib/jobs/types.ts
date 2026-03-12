@@ -22,4 +22,5 @@ export type Job = {
   department: Department;
   location: string;
   role_type: RoleType;
+  posted_date: string;
 };

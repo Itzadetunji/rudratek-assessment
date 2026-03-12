@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowDownIcon, ArrowUpIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -40,6 +41,7 @@ type JobListItem = {
 	department: string;
 	location: string;
 	role_type: string;
+	posted_date: string;
 };
 
 type JobsResponse = {
@@ -58,6 +60,51 @@ type JobsResponse = {
 
 const PER_PAGE = 10;
 const SKELETON_ROWS = 6;
+
+type SortBy = "title" | "department" | "location" | "role_type" | "posted_date";
+type SortOrder = "asc" | "desc";
+
+function SortIcons({
+	column,
+	sortBy,
+	sortOrder,
+	onSort,
+}: {
+	column: SortBy;
+	sortBy: SortBy;
+	sortOrder: SortOrder;
+	onSort: (col: SortBy, order: SortOrder) => void;
+}) {
+	const isActive = sortBy === column;
+	return (
+		<div className="flex -space-x-1">
+			<button
+				type="button"
+				aria-label={`Sort ${column} ascending`}
+				onClick={() => onSort(column, "asc")}
+				className="p-0.5 hover:bg-muted/60 rounded cursor-pointer"
+			>
+				<ArrowUpIcon
+					size={16}
+					weight={isActive && sortOrder === "asc" ? "bold" : "regular"}
+					color="currentColor"
+				/>
+			</button>
+			<button
+				type="button"
+				aria-label={`Sort ${column} descending`}
+				onClick={() => onSort(column, "desc")}
+				className="p-0.5 hover:bg-muted/60 rounded cursor-pointer"
+			>
+				<ArrowDownIcon
+					size={16}
+					weight={isActive && sortOrder === "desc" ? "bold" : "regular"}
+					color="currentColor"
+				/>
+			</button>
+		</div>
+	);
+}
 
 const useDebouncedValue = (value: string, delay = 350) => {
 	const [debouncedValue, setDebouncedValue] = useState(value);
@@ -78,16 +125,20 @@ const useDebouncedValue = (value: string, delay = 350) => {
 export default function JobsPage() {
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState("");
+	const [sortBy, setSortBy] = useState<SortBy>("posted_date");
+	const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 	const debouncedSearch = useDebouncedValue(search);
 
 	const { data, isLoading, isFetching } = useQuery({
-		queryKey: ["jobs", page, PER_PAGE, debouncedSearch],
+		queryKey: ["jobs", page, PER_PAGE, debouncedSearch, sortBy, sortOrder],
 		queryFn: async () => {
 			const response = await api.get<JobsResponse>("jobs", {
 				params: {
 					page,
 					per_page: PER_PAGE,
 					search: debouncedSearch,
+					sort_by: sortBy,
+					sort_order: sortOrder,
 				},
 			});
 
@@ -95,6 +146,12 @@ export default function JobsPage() {
 		},
 		placeholderData: (previousData) => previousData,
 	});
+
+	const handleSort = (col: SortBy, order: SortOrder) => {
+		setSortBy(col);
+		setSortOrder(order);
+		setPage(1);
+	};
 
 	const jobs = data?.data.jobs ?? [];
 	const pagination = data?.data.pagination;
@@ -135,10 +192,61 @@ export default function JobsPage() {
 							<Table>
 								<TableHeader>
 									<TableRow>
-										<TableHead>Title</TableHead>
-										<TableHead>Department</TableHead>
-										<TableHead>Location</TableHead>
-										<TableHead>Role Type</TableHead>
+										<TableHead>
+											<div className="text-primary font-bold flex items-center gap-2">
+												<span>Title</span>
+												<SortIcons
+													column="title"
+													sortBy={sortBy}
+													sortOrder={sortOrder}
+													onSort={handleSort}
+												/>
+											</div>
+										</TableHead>
+										<TableHead>
+											<div className="text-primary font-bold flex items-center gap-2">
+												<span>Department</span>
+												<SortIcons
+													column="department"
+													sortBy={sortBy}
+													sortOrder={sortOrder}
+													onSort={handleSort}
+												/>
+											</div>
+										</TableHead>
+										<TableHead>
+											<div className="text-primary font-bold flex items-center gap-2">
+												<span>Location</span>
+												<SortIcons
+													column="location"
+													sortBy={sortBy}
+													sortOrder={sortOrder}
+													onSort={handleSort}
+												/>
+											</div>
+										</TableHead>
+										<TableHead>
+											<div className="text-primary font-bold flex items-center gap-2">
+												<span>Role Type</span>
+												<SortIcons
+													column="role_type"
+													sortBy={sortBy}
+													sortOrder={sortOrder}
+													onSort={handleSort}
+												/>
+											</div>
+										</TableHead>
+										<TableHead>
+											<div className="text-primary font-bold flex items-center gap-2">
+												<span>Posted</span>
+												<SortIcons
+													column="posted_date"
+													sortBy={sortBy}
+													sortOrder={sortOrder}
+													onSort={handleSort}
+												/>
+											</div>
+										</TableHead>
 										<TableHead className="text-right">Action</TableHead>
 									</TableRow>
 								</TableHeader>
@@ -158,6 +266,9 @@ export default function JobsPage() {
 													<TableCell>
 														<Skeleton className="h-5 w-20" />
 													</TableCell>
+													<TableCell>
+														<Skeleton className="h-4 w-24" />
+													</TableCell>
 													<TableCell className="text-right">
 														<Skeleton className="ml-auto h-8 w-20" />
 													</TableCell>
@@ -168,7 +279,7 @@ export default function JobsPage() {
 									{!isLoading && jobs.length === 0 ? (
 										<TableRow>
 											<TableCell
-												colSpan={5}
+												colSpan={6}
 												className="py-10 text-center text-muted-foreground"
 											>
 												No jobs found for this search.
@@ -191,6 +302,16 @@ export default function JobsPage() {
 														>
 															{job.role_type.split("_").join(" ")}
 														</Badge>
+													</TableCell>
+													<TableCell>
+														{new Date(job.posted_date).toLocaleDateString(
+															undefined,
+															{
+																year: "numeric",
+																month: "short",
+																day: "numeric",
+															},
+														)}
 													</TableCell>
 													<TableCell className="text-right">
 														<Link

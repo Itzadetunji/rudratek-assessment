@@ -13,4 +13,5 @@ export const jobs: Job[] = Array.from({ length: TOTAL_JOBS }, (_, index) => ({
   department: faker.helpers.arrayElement(departments),
   location: `${faker.location.city()}, ${faker.location.countryCode()}`,
   role_type: faker.helpers.arrayElement(roleTypes),
+  posted_date: faker.date.recent({ days: 90 }).toISOString().slice(0, 10),
 }));
